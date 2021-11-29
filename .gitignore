@@ -1,0 +1,4 @@
+.vscode
+.packs
+venv
+__pycache__
