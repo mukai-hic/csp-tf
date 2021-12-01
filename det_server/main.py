@@ -2,6 +2,8 @@ import logging
 import asyncio
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from starlette.requests import Request
 
 import tensorflow as tf
@@ -26,6 +28,13 @@ def init(model_path: str) -> None:
 #
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.on_event('startup')
 def app_startup():
