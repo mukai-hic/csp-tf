@@ -43,14 +43,16 @@ def do_detect(data: bytes) -> dict:
         return { }
 
 def do_detect_impl(data: bytes) -> dict:
+    tms = currentTimeMillis()
+
     image = tf.io.decode_jpeg(data)
     inptn = tf.expand_dims(image, axis=0)
 
-    logger.info('[do_detect] : infer...')
-    tms = currentTimeMillis()
+    # logger.info('[do_detect] : infer...')
     outtn = the_infer(inptn)
+
     tme = currentTimeMillis()
-    logger.info('[do_detect] : DONE.')
+    # logger.info('[do_detect] : DONE.')
 
     res = format_out(outtn)
 
