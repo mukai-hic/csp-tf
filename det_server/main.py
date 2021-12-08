@@ -8,7 +8,7 @@ from starlette.requests import Request
 
 import tensorflow as tf
 
-from .detect import start_detect, exec_detect
+from .detect import start_detect, exec_detect, currentTimeMillis
 
 logger = logging.getLogger(__name__)
 
@@ -52,5 +52,10 @@ def get_root():
 @app.post('/detect')
 async def post_detect(r: Request):
     return await exec_detect(r)
+
+@app.post('/loop')
+async def post_loop(r: Request):
+    ts = currentTimeMillis()
+    return { 'objects': [], 'ts': [ ts, ts ] }
 
 #

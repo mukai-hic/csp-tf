@@ -3,6 +3,7 @@
 import logging
 import asyncio
 import json
+import time
 
 from asyncio.events import AbstractEventLoop
 
@@ -22,6 +23,9 @@ the_main_loop : AbstractEventLoop = None
 the_infer = None
 
 #
+
+def currentTimeMillis() -> int:
+    return int(time.time() * 1000)
 
 def start_detect(loop : AbstractEventLoop, infer) -> None:
     global the_main_loop
@@ -43,10 +47,14 @@ def do_detect_impl(data: bytes) -> dict:
     inptn = tf.expand_dims(image, axis=0)
 
     logger.info('[do_detect] : infer...')
+    tms = currentTimeMillis()
     outtn = the_infer(inptn)
+    tme = currentTimeMillis()
     logger.info('[do_detect] : DONE.')
 
     res = format_out(outtn)
+
+    res['ts'] = [ tms, tme ]
 
     logger.info(f'[do_detect] : {json.dumps(res)}')
 
